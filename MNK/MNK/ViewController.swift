@@ -6,12 +6,14 @@ class ViewController: UIViewController {
         static let defaultN = 4
         static let defaultK = 3
     }
+
     private var gameModel = GameModel(
-        m: Constants.defaultM, n: Constants.defaultN, k:Constants.defaultK,
+        m: Constants.defaultM, n: Constants.defaultN, k: Constants.defaultK,
         turn: .cross,
         player1: HumanPlayer(m: Constants.defaultM, n: Constants.defaultN),
-                                      player2: HumanPlayer(m: Constants.defaultM, n: Constants.defaultN),
-                                      board: TicTacBoard(m: Constants.defaultM, n: Constants.defaultN, k: Constants.defaultK))
+        player2: HumanPlayer(m: Constants.defaultM, n: Constants.defaultN),
+        board: TicTacBoard(m: Constants.defaultM, n: Constants.defaultN, k: Constants.defaultK)
+    )
     private var rangeOfM = [3, 4, 5, 6, 7, 8]
     private var rangeOfN = [3, 4, 5]
     private var rangeOfK = [3, 4]
@@ -28,13 +30,13 @@ class ViewController: UIViewController {
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         return label
     }()
-    
+
     private lazy var pickerView = {
         let pickerView = UIPickerView()
         pickerView.translatesAutoresizingMaskIntoConstraints = false
         return pickerView
     }()
-    
+
     private lazy var modeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +45,7 @@ class ViewController: UIViewController {
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         return label
     }()
-    
+
     private lazy var humansPlayerButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -52,10 +54,10 @@ class ViewController: UIViewController {
         button.setTitleColor(UIColor(named: "gray"), for: .normal)
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         button.layer.cornerRadius = 10
-        button.addTarget(self , action: #selector(didTapHumansPlayerButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapHumansPlayerButton), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var computerPlayerButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -64,10 +66,10 @@ class ViewController: UIViewController {
         button.setTitleColor(UIColor(named: "gray"), for: .normal)
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         button.layer.cornerRadius = 10
-        button.addTarget(self , action: #selector(didTapComputerPlayerButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapComputerPlayerButton), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var chooseLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +78,7 @@ class ViewController: UIViewController {
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         return label
     }()
-    
+
     private lazy var chooseCrossButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -85,10 +87,10 @@ class ViewController: UIViewController {
         button.setTitleColor(UIColor(named: "cross"), for: .normal)
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 80)
         button.layer.cornerRadius = 10
-        button.addTarget(self , action: #selector(didTapChooseCrossButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapChooseCrossButton), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var chooseZeroButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -97,10 +99,10 @@ class ViewController: UIViewController {
         button.setTitleColor(UIColor(named: "zero"), for: .normal)
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 80)
         button.layer.cornerRadius = 10
-        button.addTarget(self , action: #selector(didTapChooseZeroButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapChooseZeroButton), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var startButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -109,10 +111,10 @@ class ViewController: UIViewController {
         button.setTitleColor(UIColor(named: "gray"), for: .normal)
         button.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         button.layer.cornerRadius = 10
-        button.addTarget(self , action: #selector(didTapStartButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
         return button
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "background")
@@ -120,16 +122,16 @@ class ViewController: UIViewController {
         addSubViews()
         activateConstraints()
     }
-    
-    private func configurePickerView(){
+
+    private func configurePickerView() {
         pickerView.dataSource = self
-        pickerView.delegate =  self
+        pickerView.delegate = self
         pickerView.selectRow(2, inComponent: 0, animated: true)
         pickerView.selectRow(1, inComponent: 1, animated: true)
         pickerView.selectRow(0, inComponent: 2, animated: true)
     }
-    
-    private func addSubViews(){
+
+    private func addSubViews() {
         view.addSubview(infoLabel)
         view.addSubview(pickerView)
         view.addSubview(modeLabel)
@@ -139,102 +141,100 @@ class ViewController: UIViewController {
         view.addSubview(chooseCrossButton)
         view.addSubview(chooseZeroButton)
         view.addSubview(startButton)
-
     }
-    
+
     private func activateConstraints() {
         NSLayoutConstraint.activate([
             infoLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             infoLabel.heightAnchor.constraint(equalToConstant: 80),
             infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
+
             pickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             pickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             pickerView.topAnchor.constraint(equalTo: infoLabel.topAnchor, constant: 80),
             pickerView.heightAnchor.constraint(equalToConstant: 200),
-            
+
             modeLabel.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 10),
             modeLabel.heightAnchor.constraint(equalToConstant: 30),
             modeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             modeLabel.widthAnchor.constraint(equalToConstant: 100),
-            
+
             humansPlayerButton.topAnchor.constraint(equalTo: modeLabel.bottomAnchor, constant: 10),
             humansPlayerButton.heightAnchor.constraint(equalToConstant: 50),
             humansPlayerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             humansPlayerButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -5),
-            
+
             computerPlayerButton.topAnchor.constraint(equalTo: modeLabel.bottomAnchor, constant: 10),
             computerPlayerButton.heightAnchor.constraint(equalToConstant: 50),
             computerPlayerButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
             computerPlayerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
+
             chooseLabel.topAnchor.constraint(equalTo: computerPlayerButton.bottomAnchor, constant: 10),
             chooseLabel.heightAnchor.constraint(equalToConstant: 30),
             chooseLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             chooseLabel.widthAnchor.constraint(equalToConstant: 300),
-            
-        
+
             chooseCrossButton.topAnchor.constraint(equalTo: chooseLabel.bottomAnchor, constant: 10),
             chooseCrossButton.heightAnchor.constraint(equalToConstant: 100),
             chooseCrossButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             chooseCrossButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -5),
-            
+
             chooseZeroButton.topAnchor.constraint(equalTo: chooseLabel.bottomAnchor, constant: 10),
             chooseZeroButton.heightAnchor.constraint(equalToConstant: 100),
             chooseZeroButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
             chooseZeroButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            
+
             startButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             startButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             startButton.topAnchor.constraint(equalTo: chooseCrossButton.bottomAnchor, constant: 20),
-            startButton.heightAnchor.constraint(equalToConstant: 50)
+            startButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
-    
+
     @objc func didTapStartButton() {
         gameModel.board = TicTacBoard(m: gameModel.m, n: gameModel.n, k: gameModel.k)
+        gameModel.player1.n = gameModel.n
+        gameModel.player1.m = gameModel.m
+        gameModel.player2.n = gameModel.n
+
         let boardVC = BoardViewController(gameModel: gameModel)
         present(boardVC, animated: true, completion: nil)
     }
-    
+
     @objc func didTapHumansPlayerButton() {
         humansPlayerButton.backgroundColor = UIColor(named: "button")
         computerPlayerButton.backgroundColor = UIColor(named: "tup")
         chooseLabel.text = "Первым ходит"
         gameModel.player2 = HumanPlayer(m: gameModel.m, n: gameModel.n)
     }
-    
+
     @objc func didTapComputerPlayerButton() {
         humansPlayerButton.backgroundColor = UIColor(named: "tup")
         computerPlayerButton.backgroundColor = UIColor(named: "button")
         chooseLabel.text = "Играть за"
         gameModel.player2 = RandomPlayer(m: gameModel.m, n: gameModel.n)
     }
-    
+
     @objc func didTapChooseCrossButton() {
         chooseCrossButton.backgroundColor = UIColor(named: "button")
         chooseZeroButton.backgroundColor = UIColor(named: "tup")
         gameModel.turn = .cross
     }
-    
+
     @objc func didTapChooseZeroButton() {
         chooseZeroButton.backgroundColor = UIColor(named: "button")
         chooseCrossButton.backgroundColor = UIColor(named: "tup")
         gameModel.turn = .zero
     }
-
-
-
 }
 
-extension ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in _: UIPickerView) -> Int {
         return 3
     }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+
+    func pickerView(_: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
         case 0:
             return rangeOfM.count
@@ -246,8 +246,8 @@ extension ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
             return 0
         }
     }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+
+    func pickerView(_: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
         case 0:
             return String(rangeOfM[row])
@@ -259,7 +259,7 @@ extension ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
             return ""
         }
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch component {
         case 0:
@@ -273,16 +273,15 @@ extension ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
         updateArrays()
         pickerView.reloadAllComponents()
     }
-    
-    private func updateArrays(){
+
+    private func updateArrays() {
         if gameModel.m < gameModel.n {
-            gameModel.n  = gameModel.m
+            gameModel.n = gameModel.m
         }
-        rangeOfN = Array(3...gameModel.m)
+        rangeOfN = Array(3 ... gameModel.m)
         if gameModel.n < gameModel.k {
             gameModel.k = gameModel.n
         }
-        rangeOfK = Array(3...gameModel.n)
+        rangeOfK = Array(3 ... gameModel.n)
     }
-    
 }
